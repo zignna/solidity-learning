@@ -4,6 +4,7 @@ import { MyToken } from "../typechain-types";
 
 describe("mytoken deploy", () => {
   let myTokenC: MyToken;
+  let signers: HardhatEthersSigner[];
   before("should deploy", async () => {
     myTokenC = await hre.ethers.deployContract("MyToken", [
       "MyToken",
@@ -19,5 +20,12 @@ describe("mytoken deploy", () => {
   });
   it("should return", async () => {
     expect(await myTokenC.decimals()).equal(18);
+  });
+  it("should return 0 totalSupply", async () => {
+    expect(await myTokenC.totalSupply()).equal(0);
+  });
+  it("should return 0 balance for signer 0", async () => {
+    const signers = await hre.ethers.getSigners();
+    expect(await myTokenC.balanceOf(signers[0].address)).equal(0);
   });
 });
