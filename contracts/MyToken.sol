@@ -17,7 +17,15 @@ contract MyToken {
         name = _name;
         symbol = _symbol;
         decimals = _decimal;
-// uint8 --> 8bit unsigned int , uint16, ... ,uint256
+        _mint(1*10**uint256(decimals), msg.sender);
+        // transaction
+        // from , to, data, value, gas, ...
+        // uint8 --> 8bit unsigned int , uint16, ... ,uint256
+    }
+
+    function _mint(uint256 amount, address owner) internal {
+        totalSupply += amount;
+        balanceOf[owner] += amount;
     }
 
 //     function totalSupply() external view returns (uint256){
