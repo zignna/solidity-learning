@@ -14,11 +14,11 @@ contract MyToken {
     // 동일하면 오염되지 않았다.  탈중앙화 데이터 무결성 검증 신뢰도 높은 어플리케이션
 
 
-    constructor(string memory _name, string memory _symbol, uint8 _decimal) {
+    constructor(string memory _name, string memory _symbol, uint8 _decimal, uint256 _amount) {
         name = _name;
         symbol = _symbol;
         decimals = _decimal;
-        _mint(1*10**uint256(decimals), msg.sender);
+        _mint(_amount*10**uint256(decimals), msg.sender);
         // transaction
         // from , to, data, value, gas, ...
         // uint8 --> 8bit unsigned int , uint16, ... ,uint256
