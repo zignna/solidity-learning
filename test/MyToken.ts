@@ -96,4 +96,33 @@ describe("My Token", () => {
           )
       ).to.be.revertedWith("insufficient allowance");
     });
+    it("signer0 amount transfer by signer1 testcase", async () => {
+      const signer0 = signers[0];
+      const signer1 = signers[1];
+      await expect(
+        myTokenC.approve(signer1.address, hre.ethers.parseUnits("1", decimals))
+      )
+        .to.emit(myTokenC, "Approval")
+        .withArgs(signer1.address, hre.ethers.parseUnits("1", decimals));
+      await expect(
+        myTokenC
+          .connect(signer1)
+          .transferFrom(
+            signer0.address,
+            signer1.address,
+            hre.ethers.parseUnits("1", decimals)
+          )
+      )
+        .to.emit(myTokenC, "Transfer")
+        .withArgs(
+          signer0.address,
+          signer1.address,
+          hre.ethers.parseUnits("1", decimals)
+        );
+
+      expect(await myTokenC.balanceOf(signer1.address)).to.equal(
+        hre.ethers.parseUnits("1", decimals)
+      );
+    });
+  });
 });
