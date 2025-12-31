@@ -5,7 +5,7 @@ pragma solidity ^0.8.28;
 
 contract MyToken {
     event Transfer(address indexed from, address indexed to, uint256 value);
-    event Approval(address indexed speder, uint256 amount);
+    event Approval(address indexed spender, uint256 amount);
     string public name;
     string public symbol;
     uint8 public decimals; //1 ETH --> 1*10^18 wei / 1 wei --> 1*10^-18
