@@ -12,7 +12,7 @@ contract MyToken {
     
     uint256 public totalSupply;
     mapping(address => uint256) public balanceOf;
-    mapping(address => mapping(address => uint256)) allowance;
+    mapping(address => mapping(address => uint256)) public allowance;
     // 데이터를 조회하는 것은 블록체인은 동일 노드이므로 동일한 값 리턴 . 중요한 어플리케이션이면 서로다른 노트에 데이터 조회
     // 동일하면 오염되지 않았다.  탈중앙화 데이터 무결성 검증 신뢰도 높은 어플리케이션
 
