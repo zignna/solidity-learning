@@ -3,9 +3,13 @@
 // SPDX-License-Identifier:MIT
 pragma solidity ^0.8.28;
 
-contract MyToken {
+import "./ManagedAccess.sol";
+
+
+contract MyToken is ManagedAcess { // mangedacess의 기능을 그대로 가져온다 - 상속
     event Transfer(address indexed from, address indexed to, uint256 value);
     event Approval(address indexed spender, uint256 amount);
+
     string public name;
     string public symbol;
     uint8 public decimals; //1 ETH --> 1*10^18 wei / 1 wei --> 1*10^-18
@@ -17,7 +21,10 @@ contract MyToken {
     // 동일하면 오염되지 않았다.  탈중앙화 데이터 무결성 검증 신뢰도 높은 어플리케이션
 
 
-    constructor(string memory _name, string memory _symbol, uint8 _decimal, uint256 _amount) {
+    constructor(string memory _name, string memory _symbol, uint8 _decimal, uint256 _amount
+    ) ManagedAcess(msg.sender, msg.sender) {
+        owner = msg.sender;
+        manager = msg.sender;
         name = _name;
         symbol = _symbol;
         decimals = _decimal;
@@ -26,6 +33,7 @@ contract MyToken {
         // from , to, data, value, gas, ...
         // uint8 --> 8bit unsigned int , uint16, ... ,uint256
     }
+
 
     function approve(address spender, uint256 amount) external{
         allowance[msg.sender][spender] = amount;
@@ -41,15 +49,19 @@ contract MyToken {
         emit Transfer(from, to, amount);
     }
     
-    function mint(uint256 amount, address owner) external {
-        _mint(amount, owner);
+    function mint(uint256 amount, address to) external onlyManager {
+        _mint(amount, to);
     }
 
-    function _mint(uint256 amount, address owner) internal {
-        totalSupply += amount;
-        balanceOf[owner] += amount;
+    function setManager(address _manager) external onlyOwner {
+        manager = _manager;
+    }
 
-        emit Transfer(address(0), owner, amount);
+    function _mint(uint256 amount, address to) internal {
+        totalSupply += amount;
+        balanceOf[to] += amount;
+
+        emit Transfer(address(0), to, amount);
     }
     function transfer(uint256 amount, address to) external {
         require(balanceOf[msg.sender] >= amount, "insufficient balance");
