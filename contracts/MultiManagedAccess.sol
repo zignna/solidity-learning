@@ -17,7 +17,7 @@ abstract contract MultiManagedAccess {
         require(_managers.length == _manager_numbers, "size unmatched");
         owner = _owner;
         BACKUP_MANGER_NUMBERS = _manager_numbers;
-        for(uint i=0; i<MANAGER_NUMBERS; i++) {
+        for(uint i=0; i<_manager_numbers; i++) {
             managers[i] = _managers[i];
         }
     }
@@ -28,7 +28,7 @@ abstract contract MultiManagedAccess {
     }
 
     function allConfirmed()  internal view returns (bool) {
-        for(uint i=0; i<MANAGER_NUMBERS; i++) {
+        for(uint i=0; i<BACKUP_MANGER_NUMBERS; i++) {
             if(!confirmed[i]) {
                 return false;
             }
@@ -43,6 +43,14 @@ abstract contract MultiManagedAccess {
     }
 
     modifier onlyAllConfirmed() {
+        bool ismanager = false;
+        for (uint i = 0; i < BACKUP_MANGER_NUMBERS; i++) {
+            if (managers[i] == msg.sender) {
+                ismanager = true;
+                break;
+            }
+        }
+        require(ismanager, "You are not a manager");
         require(allConfirmed(), "Not all managers confirmed yet");
         reset();
         _;
@@ -57,6 +65,6 @@ abstract contract MultiManagedAccess {
                 break;
             }
         }
-        require(found, "You are not one of managers");
+        require(found, "You are not a manager");
     }
 }
