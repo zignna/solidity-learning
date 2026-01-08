@@ -43,6 +43,7 @@ contract MyToken is ManagedAcess { // mangedacess의 기능을 그대로 가져�
     function transferFrom(address from, address to, uint256 amount) external{
         address spender = msg.sender;
         require(allowance[from][spender] >= amount, "insufficient allowance");
+        require(balanceOf[from] >= amount, "insufficient balance");
         allowance[from][spender] -= amount;
         balanceOf[from] -= amount;
         balanceOf[to] += amount;
