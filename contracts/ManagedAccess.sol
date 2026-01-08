@@ -16,7 +16,7 @@ abstract contract ManagedAcess {
         manager = _manager;
     }
     modifier onlyOwner {
-        require(msg.sender == owner, "You are not authorized");
+        require(msg.sender == owner, "You are not authorized to manage this contract");
         _;
     }
 
