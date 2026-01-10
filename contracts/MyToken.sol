@@ -5,8 +5,8 @@ pragma solidity ^0.8.28;
 
 import "./ManagedAccess.sol";
 
-
-contract MyToken is ManagedAcess { // mangedacess의 기능을 그대로 가져온다 - 상속
+// managedaccess의 기능을 그대로 가져온다 - 상속
+contract MyToken is ManagedAccess { 
     event Transfer(address indexed from, address indexed to, uint256 value);
     event Approval(address indexed spender, uint256 amount);
 
@@ -22,7 +22,7 @@ contract MyToken is ManagedAcess { // mangedacess의 기능을 그대로 가져�
 
 
     constructor(string memory _name, string memory _symbol, uint8 _decimal, uint256 _amount
-    ) ManagedAcess(msg.sender, msg.sender) {
+    ) ManagedAccess(msg.sender, msg.sender) {
         owner = msg.sender;
         manager = msg.sender;
         name = _name;

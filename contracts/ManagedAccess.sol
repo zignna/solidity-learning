@@ -8,7 +8,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.28;
 
-abstract contract ManagedAcess {
+abstract contract ManagedAccess {
     address public owner;
     address public manager;
     constructor(address _owner, address _manager) {
